@@ -14,7 +14,7 @@ import javax.persistence.Id;
 public class BuddyInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private int id;
     private String name;
     private String phoneNumber;
 
@@ -24,13 +24,12 @@ public class BuddyInfo {
             this.phoneNumber = phoneNumber;
     }
     public String getName()
-        {
+    {
             return this.name;
-        }
-    public String getPhoneNumber()
-        {
-            return this.phoneNumber;
-        }
+    }
+    public String getPhoneNumber() {
+        return this.phoneNumber;
+    }
     public void setName(String name) {
         this.name = name;
     }
