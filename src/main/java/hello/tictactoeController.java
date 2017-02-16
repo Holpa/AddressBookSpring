@@ -1,9 +1,9 @@
 package hello;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by ahmadholpa on 2/9/2017.
@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 /*
+// in lab 6 this will be treated as Greeting classs
+    // Greeting.html will be treated as TicTacToeGreeting.html
+
+STATIC PAGE:
+Simply mage static folder inside resources and make index.html , NO routing required!!~
 tactics:
 1- add @Controller
 2- add @getMapping or @postMapping with the LINK that COMING from the internet, that link might not be the same HTML
@@ -49,10 +54,19 @@ return if you are redirecting to .html page}
     b. calling a method from passed Object inside the HTML.... NEED TO ASK????????????????????
         DO *{getRvalue()}
     c. HOW BuddyinfoController invoked the POST method ??????????????????? is it from "Submit" ?????
-    d.
+6- DATABASE !!!!!!! Follow this guide
+https://spring.io/guides/gs/handling-form-submission/
+https://spring.io/guides/gs/accessing-data-jpa/
+    a.Customer will be Buddy info
+    b. REAd the BEAN IDEA !!!
+
+7- JS into the BUSINESS !!!!! follow this guide https://spring.io/guides/gs/consuming-rest-jquery/
+    a. Jquery and AJAX
+    b. make public folder then add the File.js
  */
 @Controller
 public class tictactoeController {
+
 
 
     @GetMapping("/tictactoe")
@@ -67,12 +81,59 @@ public class tictactoeController {
         return "Hadoken";    }
 
 
-    @GetMapping("/addtictactoe")
+    @GetMapping("/addtictactoe1")
     public String addTicTacToe(Model model) {
         //attach the object with the model to be used on the .html
         model.addAttribute("TicTacToeInstance",new TicTacToe());
         return "addtictactoe";
+    }
+
+    //Lab 6
+    // here we are making object TicTacToeObject and will be used in TicTacToeGreeting
+    // website then we will get it by having, th:action="@{/TicTacToeGreeting}" th:object"${TicTacToeObject}"
+    @GetMapping("/TicTacToeGreeting")
+    public String TicTacToeGreetingForm(Model model) {
+        model.addAttribute("TicTacToeObject", new TicTacToe());
+        return "TicTacToeGreeting";
+    }
+//this method it will take the body of the request and use it i n the return SITE and that OBJECT will be called
+// ticTacToe NOT TicTacToe, However we modified the Objected to be called>> lol<<
+    @PostMapping("/TicTacToeGreeting")
+    public String TicTacToeGreetingSubmit(@ModelAttribute("lol") TicTacToe TicTacToeGreeting) {
+        return "result";
+    }
+
+    // this method will connect to the repo and return the value as json that by support of @RequestMapping
+    //we will call TicInfo and pass id to get the Tic value from the repo
+
+    @Autowired
+    TicTacToeRepository Ticrepo;
+
+    @RequestMapping("TicInfo/{id}")
+    public @ResponseBody TicTacToe TicTacToeREPOJson(@PathVariable int id)
+    {
+        return Ticrepo.findById(id);
+    }
+
+
+    //this method will call a template with an object that will be stored in TicTacToe Repo by POST METHOD
+    // tactics:
+    // 1- first call to addTicTacToe will invoke tictactoeForm.html and that will get the values from the site and
+    //      use addTicTacToe post method to invoke the @PostMapping and there we save that Object into the repo
+    @GetMapping("/addtictactoe")
+    public String addTictacToe(Model model) {
+        //buddyInfo will be looked at in the templates and see if it matches th:object="${buddyInfo}"
+        model.addAttribute("tictactoe",new TicTacToe());
+        return "tictactoeForm";
 
     }
+
+    @PostMapping("/addtictactoe")
+    public @ResponseBody String newTicTacToe(@ModelAttribute TicTacToe tictac) {
+        Ticrepo.save(tictac);
+        return tictac.toString();
+    }
+
+
 }
 

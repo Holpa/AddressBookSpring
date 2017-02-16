@@ -20,8 +20,8 @@ public class BuddyInfo {
 
     protected BuddyInfo() {}
     public BuddyInfo(String name, String phoneNumber) {
-            this.name= name;
-            this.phoneNumber = phoneNumber;
+            this.setName(name);
+            this.setPhoneNumber(phoneNumber);
     }
     public String getName()
     {
@@ -40,7 +40,7 @@ public class BuddyInfo {
     public String toString() {
         return String.format(
                 "buddy[id=%d, firstName='%s', phoneNumber='%s']",
-                id, name, phoneNumber);
+                id, getName(), getPhoneNumber());
     }
 }
 

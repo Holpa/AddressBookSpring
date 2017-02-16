@@ -9,7 +9,7 @@ import java.util.List;
  */
 
 // is a controller that can be called by http://localhost:8080/buddyInfos
-public interface BuddyInfoRepository extends CrudRepository<BuddyInfo, Integer> {
-    BuddyInfo findById(int id);
-    List<BuddyInfo> findByName(String name);
+public interface TicTacToeRepository extends CrudRepository<TicTacToe, Integer> {
+    TicTacToe findById(int id);
+    List<TicTacToe> findByName(String name);
 }

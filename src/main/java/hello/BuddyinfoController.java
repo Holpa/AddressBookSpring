@@ -31,8 +31,8 @@ public class BuddyinfoController {
     }
 
     @RequestMapping("buddyInfo/{id}")
-    public @ResponseBody String buddy(@PathVariable int id)
+    public @ResponseBody BuddyInfo buddy(@PathVariable int id)
     {
-        return birepo.findById(id).toString();
+        return birepo.findById(id);
     }
 }
